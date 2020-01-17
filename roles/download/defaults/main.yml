@@ -46,7 +46,7 @@ download_validate_certs: True
 download_delegate: "{% if download_localhost %}localhost{% else %}{{ groups['kube-master'][0] }}{% endif %}"
 
 # Arch of Docker images and needed packages
-image_arch: "{{host_architecture | default('amd64')}}"
+image_arch: "{{host_architecture | trim | default('amd64')}}"
 
 # Versions
 kube_version: v1.16.3
@@ -115,6 +115,7 @@ crictl_checksums:
     v1.16.1: 19fed421710fccfe58f5573383bb137c19438a9056355556f1a15da8d23b3ad1
     v1.16.0: a3eefa10a483c643ad85aee3d7832a720976ef7e80dde46b212eaaacd7d09512
     v1.15.0: c3b71be1f363e16078b51334967348aab4f72f46ef64a61fe7754e029779d45a
+  s390x:
 
 # Checksums
 
@@ -161,6 +162,7 @@ kubelet_checksums:
     v1.15.2: 5f1001608bac508ba7158704e8f762911dd52d0e16740984679f5c8263336e08
     v1.15.1: d9f5c09d47c448ac12b061821c1149aba32933cf79470a85e46d8b3b338aa72b
     v1.15.0: f13b9a2f840e0e18b4fa92a217c95977036113c74f56bb0652efd2e7bcbfba15
+  s390x:
 
 kubectl_checksums:
   arm:
@@ -205,6 +207,7 @@ kubectl_checksums:
     v1.15.2: a737000af13f9c8c347945bc581b819659c464eae92056424bdddae735e2e888
     v1.15.1: f4f4b855ab16ef295bc74f07edc77482d43e8fe81abc7cf92c476c4344788aa6
     v1.15.0: ecec7fe4ffa03018ff00f14e228442af5c2284e57771e4916b977c20ba4e5b39
+  s390x:
 
 kubeadm_checksums:
   arm:
@@ -249,6 +252,8 @@ kubeadm_checksums:
     v1.15.2: fe2a13a1dea73249560ea44ab54c0359a9722e9c66832f6bcad86798438cba2f
     v1.15.1: 3d42441ae177826f1181e559cd2a729464ca8efadef196cfa0e8053a615333b5
     v1.15.0: fc4aa44b96dc143d7c3062124e25fed671cab884ebb8b2446edd10abb45e88c2
+  s390x:
+    v1.16.3: 585c3ffd196ae4268f71d5ad937e060538f65dd579afb867b261d260a09043a1
 
 etcd_binary_checksums:
   # Etcd does not have arm32 builds at the moment, having some dummy value is
@@ -256,10 +261,12 @@ etcd_binary_checksums:
   arm: 0
   arm64: 5ec97b0b872adce275b8130d19db314f7f2b803aeb24c4aae17a19e2d66853c4
   amd64: 1620a59150ec0a0124a65540e23891243feb2d9a628092fb1edcc23974724a45
+  s390x: 0
 cni_binary_checksums:
   arm: 6094887394e0f10cfb538a0a052bc94a89a88b77af2e438b66e2c0bee26b52ee
   arm64: aa931e78f08f00edd01f8b5ea2c9402cbf3877d91f9fbe9c132c05430cc7a493
   amd64: 29a092bef9cb6f26c8d5340f3d56567b62c7ebdb1321245d94b1842c80ba20ba
+  s390x: 0
 calicoctl_binary_checksums:
   arm:
     v3.11.1: 0
@@ -279,6 +286,7 @@ calicoctl_binary_checksums:
     v3.6.1: 60fbaeb257061647bdf12b5ede7a0d4298a5ee216f6472e5a92bb14ef5c2a5d3
     v3.5.4: a4481178665658658a73e4ceca9a1dff5cccded4179615c91d1c3e49fd96f237
     v3.4.4: ff35d9e8b5c00e9fe47d05e8f5123ec98fd641370f8cd93f4fbb3d913da77ab6
+  s390x:
 
 etcd_binary_checksum: "{{ etcd_binary_checksums[image_arch] }}"
 cni_binary_checksum: "{{ cni_binary_checksums[image_arch] }}"
@@ -451,7 +459,7 @@ downloads:
     file: true
     version: "{{ cni_version }}"
     dest: "{{local_release_dir}}/cni-plugins-linux-{{ image_arch }}-{{ cni_version }}.tgz"
-    sha256: "{{ cni_binary_checksum }}"
+    sha256: "{{ cni_binary_checksum|default(None) }}"
     url: "{{ cni_download_url }}"
     unarchive: false
     owner: "root"
@@ -464,7 +472,7 @@ downloads:
     file: true
     version: "{{ kubeadm_version }}"
     dest: "{{ local_release_dir }}/kubeadm-{{ kubeadm_version }}-{{ image_arch }}"
-    sha256: "{{ kubeadm_binary_checksum }}"
+    sha256: "{{ kubeadm_binary_checksum|default(None) }}"
     url: "{{ kubeadm_download_url }}"
     unarchive: false
     owner: "root"
@@ -477,7 +485,7 @@ downloads:
     file: true
     version: "{{ kube_version }}"
     dest: "{{ local_release_dir }}/kubelet-{{ kube_version }}-{{ image_arch }}"
-    sha256: "{{ kubelet_binary_checksum }}"
+    sha256: "{{ kubelet_binary_checksum|default(None) }}"
     url: "{{ kubelet_download_url }}"
     unarchive: false
     owner: "root"
@@ -490,7 +498,7 @@ downloads:
     file: true
     version: "{{ kube_version }}"
     dest: "{{ local_release_dir }}/kubectl-{{ kube_version }}-{{ image_arch }}"
-    sha256: "{{ kubectl_binary_checksum }}"
+    sha256: "{{ kubectl_binary_checksum|default(None) }}"
     url: "{{ kubectl_download_url }}"
     unarchive: false
     owner: "root"
@@ -503,7 +511,7 @@ downloads:
     enabled: "{{ container_manager in ['crio', 'cri', 'containerd'] }}"
     version: "{{ crictl_version }}"
     dest: "{{local_release_dir}}/crictl-{{ crictl_version }}-linux-{{ image_arch }}.tar.gz"
-    sha256: "{{ crictl_binary_checksum }}"
+    sha256: "{{ crictl_binary_checksum|default(None) }}"
     url: "{{ crictl_download_url }}"
     unarchive: true
     owner: "root"
@@ -570,7 +578,7 @@ downloads:
     file: true
     version: "{{ calico_ctl_version }}"
     dest: "{{local_release_dir}}/calicoctl"
-    sha256: "{{ calicoctl_binary_checksum }}"
+    sha256: "{{ calicoctl_binary_checksum|default(None) }}"
     url: "{{ calicoctl_download_url }}"
     unarchive: false
     owner: "root"
