@@ -94,6 +94,7 @@ spec:
           mountPath: /etc/cni/net.d
         - name: flannel-cfg
           mountPath: /etc/kube-flannel/
+      {% if kube_version is version('1.7', '<') %}   
       - name: install-cni
         image: {{ flannel_cni_image_repo }}:{{ flannel_cni_image_tag }}
         command: ["/install-cni.sh"]
@@ -111,6 +112,7 @@ spec:
           mountPath: /host/etc/cni/net.d
         - name: host-cni-bin
           mountPath: /host/opt/cni/bin/
+      {% endif %}
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
       tolerations:
