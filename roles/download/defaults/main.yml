@@ -119,6 +119,10 @@ crictl_checksums:
     v1.16.1: 0
     v1.16.0: 0
     v1.15.0: 0
+  ppc64le:
+    v1.16.1: 0
+    v1.16.0: 0
+    v1.15.0: 0
 
 # Checksums
 
@@ -166,6 +170,20 @@ kubelet_checksums:
     v1.15.1: d9f5c09d47c448ac12b061821c1149aba32933cf79470a85e46d8b3b338aa72b
     v1.15.0: f13b9a2f840e0e18b4fa92a217c95977036113c74f56bb0652efd2e7bcbfba15
   s390x:
+    v1.17.0: 0
+    v1.16.3: 02e416809c0a4c468aab53005f1fbec42cd5128dbc109835739b5918f6699619
+    v1.16.2: 0
+    v1.16.1: 0
+    v1.16.0: 0
+    v1.15.7: 0
+    v1.15.6: 0
+    v1.15.5: 0
+    v1.15.4: 0
+    v1.15.3: 0
+    v1.15.2: 0
+    v1.15.1: 0
+    v1.15.0: 0
+  ppc64le:
     v1.17.0: 0
     v1.16.3: 02e416809c0a4c468aab53005f1fbec42cd5128dbc109835739b5918f6699619
     v1.16.2: 0
@@ -237,6 +255,20 @@ kubectl_checksums:
     v1.15.2: 0
     v1.15.1: 0
     v1.15.0: 0
+  ppc64le:
+    v1.17.0: 0
+    v1.16.3: 350c00378d97a86b661c512926db93f7f923b5700e7aeed2bf39830ed58046ee
+    v1.16.2: 0
+    v1.16.1: 0
+    v1.16.0: 0
+    v1.15.7: 0
+    v1.15.6: 0
+    v1.15.5: 0
+    v1.15.4: 0
+    v1.15.3: 0
+    v1.15.2: 0
+    v1.15.1: 0
+    v1.15.0: 0
 
 kubeadm_checksums:
   arm:
@@ -295,6 +327,20 @@ kubeadm_checksums:
     v1.15.2: 0
     v1.15.1: 0
     v1.15.0: 0
+  ppc64le:
+    v1.17.0: 0
+    v1.16.3: 585c3ffd196ae4268f71d5ad937e060538f65dd579afb867b261d260a09043a1
+    v1.16.2: 0
+    v1.16.1: 0
+    v1.16.0: 0
+    v1.15.7: 0
+    v1.15.6: 0
+    v1.15.5: 0
+    v1.15.4: 0
+    v1.15.3: 0
+    v1.15.2: 0
+    v1.15.1: 0
+    v1.15.0: 0
 
 etcd_binary_checksums:
   # Etcd does not have arm32 builds at the moment, having some dummy value is
@@ -303,11 +349,13 @@ etcd_binary_checksums:
   arm64: 5ec97b0b872adce275b8130d19db314f7f2b803aeb24c4aae17a19e2d66853c4
   amd64: 1620a59150ec0a0124a65540e23891243feb2d9a628092fb1edcc23974724a45
   s390x: 0
+  ppc64le: 0
 cni_binary_checksums:
   arm: 6094887394e0f10cfb538a0a052bc94a89a88b77af2e438b66e2c0bee26b52ee
   arm64: aa931e78f08f00edd01f8b5ea2c9402cbf3877d91f9fbe9c132c05430cc7a493
   amd64: 29a092bef9cb6f26c8d5340f3d56567b62c7ebdb1321245d94b1842c80ba20ba
   s390x: 3c7c6218e899179fc0cdd198b196f706fd32782af34d568434c83682d4a612a9
+  ppc64le: 3c7c6218e899179fc0cdd198b196f706fd32782af34d568434c83682d4a612a9
 calicoctl_binary_checksums:
   arm:
     v3.11.1: 0
@@ -328,6 +376,12 @@ calicoctl_binary_checksums:
     v3.5.4: a4481178665658658a73e4ceca9a1dff5cccded4179615c91d1c3e49fd96f237
     v3.4.4: ff35d9e8b5c00e9fe47d05e8f5123ec98fd641370f8cd93f4fbb3d913da77ab6
   s390x:
+    v3.11.1: 0
+    v3.7.3: 0
+    v3.6.1: 0
+    v3.5.4: 0
+    v3.4.4: 0
+  ppc64le:
     v3.11.1: 0
     v3.7.3: 0
     v3.6.1: 0
@@ -611,7 +665,7 @@ downloads:
       - k8s-cluster
 
   flannel_cni:
-    enabled: "{{ kube_network_plugin == 'flannel' and kube_version is version('1.7', '<') }}"
+    enabled: false #"{{ kube_network_plugin == 'flannel' and kube_version is version('1.7', '<') }}"
     container: true
     repo: "{{ flannel_cni_image_repo }}"
     tag: "{{ flannel_cni_image_tag }}"

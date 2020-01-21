@@ -26,7 +26,7 @@ dependencies:
       - contiv
 
   - role: kubernetes-apps/network_plugin/cni
-    when: kube_network_plugin == 'cni'
+    when: kube_network_plugin is defined
     tags:
       - cni
 
