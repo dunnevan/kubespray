@@ -11,10 +11,10 @@
     - { name: coredns, module: template, file: coredns-svc.yml, type: svc }
     - { name: coredns, module: copy, file: coredns-clusterrole.yml, type: clusterrole }
     - { name: coredns, module: copy, file: coredns-clusterrolebinding.yml, type: clusterrolebinding }
-    - { name: dns-autoscaler, module: copy, file: dns-autoscaler-sa.yml, type: sa }
-    - { name: dns-autoscaler, module: copy, file: dns-autoscaler-clusterrole.yml, type: clusterrole }
-    - { name: dns-autoscaler, module: copy, file: dns-autoscaler-clusterrolebinding.yml, type: clusterrolebinding }
-    - { name: dns-autoscaler, module: template, file: dns-autoscaler.yml, type: deployment }
+    #- { name: dns-autoscaler, module: copy, file: dns-autoscaler-sa.yml, type: sa }
+    #- { name: dns-autoscaler, module: copy, file: dns-autoscaler-clusterrole.yml, type: clusterrole }
+    #- { name: dns-autoscaler, module: copy, file: dns-autoscaler-clusterrolebinding.yml, type: clusterrolebinding }
+    #- { name: dns-autoscaler, module: template, file: dns-autoscaler.yml, type: deployment }
   register: coredns_manifests
   vars:
     clusterIP: "{{ skydns_server }}"

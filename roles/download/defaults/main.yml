@@ -867,7 +867,7 @@ downloads:
       - k8s-cluster
 
   dnsautoscaler:
-    enabled: "{{ dns_mode in ['coredns', 'coredns_dual'] }}"
+    enabled: false #"{{ dns_mode in ['coredns', 'coredns_dual'] }}"
     container: true
     repo: "{{ dnsautoscaler_image_repo }}"
     tag: "{{ dnsautoscaler_image_tag }}"
